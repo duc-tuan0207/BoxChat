@@ -30,7 +30,6 @@ class RoomListViewController: UIViewController {
         tableView.delegate = self
         tableView.register(RoomCell.self, forCellReuseIdentifier: RoomCell.identifier)
         
-        // Cấu hình tính năng kéo để làm mới (Pull-to-refresh)
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         tableView.refreshControl = refreshControl
         
@@ -44,17 +43,14 @@ class RoomListViewController: UIViewController {
     }
     
     private func setupNavBar() {
-        // ĐÃ BỎ: Không tạo nút Đăng xuất bên góc trái nữa
         
         let addImg = UIImage(systemName: "plus.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .bold))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: addImg, style: .plain, target: self, action: #selector(didTapAddRoom))
     }
     
-    // Hàm fetchRooms chuẩn hóa luồng render giao diện
     @objc private func fetchRooms() {
         NetworkManager.shared.fetchRooms { [weak self] result in
             DispatchQueue.main.async {
-                // Tắt hiệu ứng quay quay của refresh control nếu có
                 self?.refreshControl.endRefreshing()
                 
                 if case .success(let response) = result {

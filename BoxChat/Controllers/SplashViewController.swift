@@ -83,29 +83,23 @@ class SplashViewController: UIViewController {
     }
 
     private func navigateNext() {
-        // Lấy đối tượng Window hiện tại từ SceneDelegate
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let sceneDelegate = windowScene.delegate as? SceneDelegate,
               let window = sceneDelegate.window else { return }
         
         let rootVC: UIViewController
         
-        // KIỂM TRA ĐĂNG NHẬP: Quyết định màn hình tiếp theo sẽ hiển thị
         if TokenManager.shared.accessToken != nil {
-            // Trường hợp 1: Đã có Token -> Kết nối mạng Socket và vào thẳng phòng chat
             WebSocketService.shared.connect()
             rootVC = MainTabBarController()
         } else {
-            // Trường hợp 2: Chưa có Token -> Chuyển sang màn hình Đăng nhập của bạn
             rootVC = LoginViewController()
         }
         
-        // Thực hiện chuyển đổi Root View Controller với hiệu ứng mờ dần (Cross Dissolve) siêu mượt
         window.rootViewController = rootVC
         UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: nil, completion: nil)
     }
     
-    // Hỗ trợ cập nhật màu nền khi người dùng đổi giao diện Light/Dark Mode hệ thống
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {

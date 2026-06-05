@@ -134,7 +134,6 @@ class UserProfileViewController: UIViewController {
         WebSocketService.shared.disconnect()
         TokenManager.shared.clear()
         
-        // Quay về màn hình Login với hiệu ứng mượt mà
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let sceneDelegate = windowScene.delegate as? SceneDelegate,
            let window = sceneDelegate.window {
